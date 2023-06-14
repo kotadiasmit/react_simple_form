@@ -1,0 +1,42 @@
+.form-container {
+  background-image: url("https://img.freepik.com/free-photo/pastel-blue-vignette-concrete-textured-background_53876-102637.jpg");
+  background-size: cover;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background-color: white;
+  padding: 10px;
+  font-family: serif;
+}
+.form-container .label {
+  font-size: 18px;
+  margin-left: 2px;
+  align-self: flex-start;
+  padding-left: 5%;
+}
+.form-container .input,
+.form-container .textarea {
+  width: 90%;
+  font-size: 16px;
+  border: 1px solid gray;
+  padding: 2px 3px 2px 5px;
+  border-radius: 3px;
+  margin-top: 5px;
+  margin-bottom: 15px;
+  background-color: #ececec;
+  text-transform: capitalize;
+}
+.form-container .textarea {
+  height: 100px;
+}
+
+.form-container .error-msg {
+  align-self: flex-start;
+  color: red;
+  padding-left: 5%;
+}
+
+.update-add-location-btn {
+  display: none;
+}
