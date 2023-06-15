@@ -4,22 +4,40 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import { Modal, Button } from "react-bootstrap";
 
 const Form = (props) => {
-  const { addUserDetails, lastUserId } = props;
+  const {
+    onAddUserDetails,
+    lastUserId,
+    onUpdateUserDetails,
+    userDetailObj,
+    onUpdateFormShow,
+    onclickUpdateDetails,
+  } = props;
 
-  const [show, setShow] = useState(false);
-  const [userName, setUserName] = useState("");
-  const [userLocation, setUserLocation] = useState("");
+  let userLocationInput = "";
+  let userNameInput = "";
+  let formUserId = lastUserId + 1;
+
+  //userDetailsObj & onUpdateFormShow taken when user clicks on updateBtn
+  //onAddUserDetails & lastUserId taken when user clicks on Add Location
+  if (userDetailObj !== undefined) {
+    const { userId, name, location } = userDetailObj;
+    userNameInput = name;
+    userLocationInput = location;
+    formUserId = userId;
+  }
+
+  const [show, setShow] = useState(onUpdateFormShow ? true : false);
+  const [userName, setUserName] = useState(userNameInput);
+  const [userLocation, setUserLocation] = useState(userLocationInput);
   const [errorMsg, setErrorMsg] = useState("");
 
-  const showErrorMsg = () => {
-    if (userName === "") {
-      if (userLocation !== "") {
-        setErrorMsg("please enter Name");
-      } else {
-        setErrorMsg("please enter Name & Location");
-      }
-    } else if (userLocation === "") {
-      setErrorMsg("please enter Location");
+  const showErrorMsg = (trimmedUserName, trimmedUserLocation) => {
+    if (trimmedUserName === "" && trimmedUserLocation !== "") {
+      setErrorMsg("please enter valid Name");
+    } else if (trimmedUserName !== "" && trimmedUserLocation === "") {
+      setErrorMsg("please enter valid Location");
+    } else if (trimmedUserName === "" && trimmedUserLocation === "") {
+      setErrorMsg("please enter valid Name & Location");
     }
   };
   const modalClose = () => {
@@ -27,6 +45,7 @@ const Form = (props) => {
     setUserName("");
     setUserLocation("");
     setErrorMsg("");
+    onUpdateFormShow && onclickUpdateDetails(false);
   };
   const modalShow = () => setShow(true);
   const nameInputChanged = (event) => {
@@ -38,30 +57,59 @@ const Form = (props) => {
     setErrorMsg("");
   };
   const modalCloseOnAdd = () => {
-    if (userName && userLocation !== "") {
+    const trimmedUserName = userName.trim();
+    const trimmedUserLocation = userLocation.trim();
+    if (trimmedUserName && trimmedUserLocation) {
+      console.log(trimmedUserName);
       setShow(false);
-      let userDetails = {
-        userId: lastUserId + 1,
-        name: userName,
-        location: userLocation,
+      let addUpdateUserDetails = {
+        userId: formUserId,
+        name: trimmedUserName,
+        location: trimmedUserLocation,
       };
-      addUserDetails(userDetails);
+      if (onUpdateFormShow) {
+        onclickUpdateDetails(false);
+        onUpdateUserDetails(addUpdateUserDetails);
+      } else {
+        onAddUserDetails(addUpdateUserDetails);
+      }
       setUserName("");
       setUserLocation("");
     } else {
-      showErrorMsg();
+      showErrorMsg(trimmedUserName, trimmedUserLocation);
+      setUserName("");
+      setUserLocation("");
     }
   };
 
+  const showUpdateAddBtn = () => {
+    if (onUpdateFormShow) {
+      return (
+        <Button variant="primary" onClick={modalCloseOnAdd}>
+          Update
+        </Button>
+      );
+    }
+    return (
+      <Button variant="primary" onClick={modalCloseOnAdd}>
+        Add
+      </Button>
+    );
+  };
+
+  const modelTitle = onUpdateFormShow ? "Update" : "Add";
+
   return (
     <>
-      <Button variant="primary" onClick={modalShow}>
-        Add Location
-      </Button>
+      {!onUpdateFormShow && (
+        <Button variant="primary" onClick={modalShow}>
+          Add Location
+        </Button>
+      )}
 
       <Modal centered show={show} onHide={modalClose}>
         <Modal.Header closeButton>
-          <Modal.Title>Add Your Location</Modal.Title>
+          <Modal.Title>{`${modelTitle} your location`}</Modal.Title>
         </Modal.Header>
 
         <Modal.Body>
@@ -105,9 +153,7 @@ const Form = (props) => {
           <Button variant="secondary" onClick={modalClose}>
             Close
           </Button>
-          <Button variant="primary" onClick={modalCloseOnAdd}>
-            Add
-          </Button>
+          {showUpdateAddBtn()}
         </Modal.Footer>
       </Modal>
     </>

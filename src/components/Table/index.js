@@ -6,10 +6,7 @@ const Table = (props) => {
   const noDataHeading = userLocationArray.length === 0 ? "No Data Found." : "";
 
   return (
-    <div
-      className="table-responsive location-table-container mt-3 mb-4"
-      id="table-container"
-    >
+    <div className="table-responsive location-table-container mt-3 mb-4">
       <table className="table">
         <thead>
           <tr>
@@ -33,7 +30,7 @@ const Table = (props) => {
           ))}
         </tbody>
       </table>
-      <h4 className="text-center mt-5">{noDataHeading}</h4>
+      {noDataHeading && <h4 className="text-center mt-5">{noDataHeading}</h4>}
     </div>
   );
 };

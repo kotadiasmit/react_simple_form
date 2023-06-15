@@ -2,6 +2,7 @@ import { useState } from "react";
 import "./App.css";
 import Form from "./components/Form";
 import Table from "./components/Table";
+import { MyContext } from "./context/myContext";
 
 const userDetailsArray = [
   {
@@ -9,7 +10,7 @@ const userDetailsArray = [
     name: "Smit Kotadia",
     location: "Sola Road, Ahmedabad, Gujarat, India",
   },
-  { userId: 2, name: "Smit", location: "Sola Road, Ahmedabad, Gujarat" },
+  { userId: 2, name: "Smit", location: "Ahmedabad, Gujarat" },
   { userId: 3, name: "Kotadia", location: "Sola Road, Ahmedabad" },
   { userId: 4, name: "Raj", location: "Sola Road, India" },
   { userId: 5, name: "rahul", location: "Ahmedabad, Gujarat, India" },
@@ -26,44 +27,79 @@ const userDetailsArray = [
   { userId: 16, name: "Smit Shah", location: "Ahmedabad, Gujarat, India" },
 ];
 
-function App() {
+const App = () => {
   const [userLocationArray, setUserLocationArray] = useState(userDetailsArray);
-
-  const lastUserId = userLocationArray[userLocationArray.length - 1].userId;
+  const [searchValue, setSearchValue] = useState("");
+  const lengthOfUserLocationArray = userLocationArray.length;
+  const lastUserId = lengthOfUserLocationArray
+    ? userLocationArray[lengthOfUserLocationArray - 1].userId
+    : 0;
 
   const addUserDetails = (userDetails) =>
     setUserLocationArray([...userLocationArray, userDetails]);
 
-  return (
-    <div className="user-location-container">
-      <h1 className="mt-3">User Location Details</h1>
+  const findUerIndex = (userDetails) =>
+    userLocationArray.findIndex((user) => user.userId === userDetails.userId);
+  const updateUserLocationArray = (userDetails) => {
+    userLocationArray[findUerIndex(userDetails)] = userDetails;
+    setUserLocationArray([...userLocationArray]);
+  };
 
-      <div className="search-and-add-location-container">
-        <Form addUserDetails={addUserDetails} lastUserId={lastUserId} />
-        <div className="search-input-container">
-          <input
-            type="search"
-            className="search-bar"
-            placeholder="Search by Name or Location"
-            id="search-input"
-            maxLength="35"
-            autoFocus
-          />
-          <select
-            className="search-select-container"
-            id="search-select-container"
-          >
-            <option value="search_by_name">Search by Name</option>
-            <option value="search_by_location">Search by Location</option>
-          </select>
-          <button type="button" className="search-btn" id="search-btn">
-            Search
-          </button>
+  const deleteUserLocation = (userDetails) => {
+    userLocationArray.splice(findUerIndex(userDetails), 1);
+    const updatedNewArray = userLocationArray.map((user, index) => ({
+      userId: index + 1,
+      name: user.name,
+      location: user.location,
+    }));
+    setUserLocationArray(updatedNewArray);
+  };
+
+  const searchBySearchInput = (event) => {
+    setSearchValue(event.target.value);
+    const searchedLocationArray = userLocationArray.filter((user) =>
+      user.name.toLocaleLowerCase().includes(searchValue.toLocaleLowerCase())
+    );
+    console.log(searchedLocationArray);
+    setUserLocationArray(searchedLocationArray);
+  };
+
+  return (
+    <MyContext.Provider
+      value={{
+        userLocationArray,
+        updateUserLocationArray: updateUserLocationArray,
+        deleteUserLocation: deleteUserLocation,
+      }}
+    >
+      <div className="user-location-container">
+        <h1 className="mt-3">User Location Details</h1>
+
+        <div className="search-and-add-location-container">
+          <Form onAddUserDetails={addUserDetails} lastUserId={lastUserId} />
+          <div className="search-input-container">
+            <input
+              type="search"
+              className="search-bar"
+              placeholder="Search by Name or Location"
+              maxLength="35"
+              autoFocus
+              value={searchValue}
+              onChange={searchBySearchInput}
+            />
+            <select className="search-select-container">
+              <option value="searchByName">Search by Name</option>
+              <option value="searchByLocation">Search by Location</option>
+            </select>
+            <button type="button" className="search-btn">
+              Search
+            </button>
+          </div>
         </div>
+        <Table userLocationArray={userLocationArray} />
       </div>
-      <Table userLocationArray={userLocationArray} />
-    </div>
+    </MyContext.Provider>
   );
-}
+};
 
 export default App;
