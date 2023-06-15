@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import "./App.css";
 import Form from "./components/Form";
 import Table from "./components/Table";
@@ -30,6 +30,8 @@ const userDetailsArray = [
 const App = () => {
   const [userLocationArray, setUserLocationArray] = useState(userDetailsArray);
   const [searchValue, setSearchValue] = useState("");
+  const [searchedLocationArray, setSearchedLocationArray] =
+    useState(userLocationArray);
   const lengthOfUserLocationArray = userLocationArray.length;
   const lastUserId = lengthOfUserLocationArray
     ? userLocationArray[lengthOfUserLocationArray - 1].userId
@@ -57,12 +59,14 @@ const App = () => {
 
   const searchBySearchInput = (event) => {
     setSearchValue(event.target.value);
-    const searchedLocationArray = userLocationArray.filter((user) =>
+  };
+
+  useEffect(() => {
+    const searchedArray = userLocationArray.filter((user) =>
       user.name.toLocaleLowerCase().includes(searchValue.toLocaleLowerCase())
     );
-    console.log(searchedLocationArray);
-    setUserLocationArray(searchedLocationArray);
-  };
+    setSearchedLocationArray(searchedArray);
+  }, [searchValue]);
 
   return (
     <MyContext.Provider
@@ -96,7 +100,11 @@ const App = () => {
             </button>
           </div>
         </div>
-        <Table userLocationArray={userLocationArray} />
+        <Table
+          userLocationArray={
+            searchValue ? searchedLocationArray : userLocationArray
+          }
+        />
       </div>
     </MyContext.Provider>
   );
