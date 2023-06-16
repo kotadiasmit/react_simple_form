@@ -3,6 +3,7 @@ import "./App.css";
 import Form from "./components/Form";
 import Table from "./components/Table";
 import { MyContext } from "./context/myContext";
+import Pagination from "./components/Pagination";
 
 const userDetailsArray = [
   {
@@ -27,11 +28,14 @@ const userDetailsArray = [
   { userId: 16, name: "Smit Shah", location: "Ahmedabad, Gujarat, India" },
 ];
 
+let defaultSearchValue = "";
+
 const App = () => {
   const [userLocationArray, setUserLocationArray] = useState(userDetailsArray);
-  const [searchValue, setSearchValue] = useState("");
+  const [searchValue, setSearchValue] = useState(defaultSearchValue);
   const [searchedLocationArray, setSearchedLocationArray] =
     useState(userLocationArray);
+  const [selectedValue, setSelectedValue] = useState("searchByName");
   const lengthOfUserLocationArray = userLocationArray.length;
   const lastUserId = lengthOfUserLocationArray
     ? userLocationArray[lengthOfUserLocationArray - 1].userId
@@ -42,6 +46,7 @@ const App = () => {
 
   const findUerIndex = (userDetails) =>
     userLocationArray.findIndex((user) => user.userId === userDetails.userId);
+
   const updateUserLocationArray = (userDetails) => {
     userLocationArray[findUerIndex(userDetails)] = userDetails;
     setUserLocationArray([...userLocationArray]);
@@ -61,12 +66,22 @@ const App = () => {
     setSearchValue(event.target.value);
   };
 
+  const selectedOption = (event) => {
+    setSelectedValue(event.target.value);
+  };
+
   useEffect(() => {
     const searchedArray = userLocationArray.filter((user) =>
-      user.name.toLocaleLowerCase().includes(searchValue.toLocaleLowerCase())
+      selectedValue === "searchByName"
+        ? user.name
+            .toLocaleLowerCase()
+            .includes(searchValue.toLocaleLowerCase())
+        : user.location
+            .toLocaleLowerCase()
+            .includes(searchValue.toLocaleLowerCase())
     );
     setSearchedLocationArray(searchedArray);
-  }, [searchValue]);
+  }, [searchValue, userLocationArray, selectedValue]);
 
   return (
     <MyContext.Provider
@@ -91,7 +106,11 @@ const App = () => {
               value={searchValue}
               onChange={searchBySearchInput}
             />
-            <select className="search-select-container">
+            <select
+              className="search-select-container"
+              value={selectedValue}
+              onChange={selectedOption}
+            >
               <option value="searchByName">Search by Name</option>
               <option value="searchByLocation">Search by Location</option>
             </select>
@@ -100,7 +119,9 @@ const App = () => {
             </button>
           </div>
         </div>
-        <Table
+        <Pagination
+          initialPage={3}
+          itemsPerPage={5}
           userLocationArray={
             searchValue ? searchedLocationArray : userLocationArray
           }

@@ -56,11 +56,11 @@ const Form = (props) => {
     setUserLocation(event.target.value);
     setErrorMsg("");
   };
-  const modalCloseOnAdd = () => {
+  const modalCloseOnAdd = (event) => {
+    event.preventDefault();
     const trimmedUserName = userName.trim();
     const trimmedUserLocation = userLocation.trim();
     if (trimmedUserName && trimmedUserLocation) {
-      console.log(trimmedUserName);
       setShow(false);
       let addUpdateUserDetails = {
         userId: formUserId,
@@ -77,8 +77,8 @@ const Form = (props) => {
       setUserLocation("");
     } else {
       showErrorMsg(trimmedUserName, trimmedUserLocation);
-      setUserName("");
-      setUserLocation("");
+      // setUserName("");
+      // setUserLocation("");
     }
   };
 
@@ -113,10 +113,7 @@ const Form = (props) => {
         </Modal.Header>
 
         <Modal.Body>
-          <form
-            className="form-container"
-            onSubmit={(event) => event.preventDefault()}
-          >
+          <form className="form-container" onSubmit={modalCloseOnAdd}>
             <label className="label" htmlFor="'username">
               User Name
             </label>

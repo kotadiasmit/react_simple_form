@@ -1,0 +1,43 @@
+$border: 1px solid rgb(203, 203, 203);
+$padding: 5px 10px 5px 10px;
+
+.pagination-nos-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  list-style-type: none;
+  padding: 0px;
+  font-size: 18px;
+  border: $border;
+  border-radius: 4px;
+  background-color: #ebe9e9;
+}
+.page-nos {
+  padding: $padding;
+  color: gray;
+  text-decoration: none;
+  border-right: $border;
+}
+.active-page {
+  background-color: blue;
+  padding: $padding;
+  color: #ffffff;
+}
+.prev-tag {
+  padding: $padding;
+  text-decoration: none;
+  border-right: $border;
+}
+.next-tag {
+  padding: $padding;
+  text-decoration: none;
+}
+.disable-prev-next {
+  color: gray;
+}
+.break-line {
+  padding: $padding;
+  color: gray;
+  text-decoration: none;
+  border-right: $border;
+}
