@@ -36,13 +36,17 @@ const App = () => {
   const [searchedLocationArray, setSearchedLocationArray] =
     useState(userLocationArray);
   const [selectedValue, setSelectedValue] = useState("searchByName");
+  const [currentPageNo, setCurrentPageNo] = useState(0);
+
   const lengthOfUserLocationArray = userLocationArray.length;
   const lastUserId = lengthOfUserLocationArray
     ? userLocationArray[lengthOfUserLocationArray - 1].userId
     : 0;
+  const itemsPerPage = 5;
 
-  const addUserDetails = (userDetails) =>
+  const addUserDetails = (userDetails) => {
     setUserLocationArray([...userLocationArray, userDetails]);
+  };
 
   const findUerIndex = (userDetails) =>
     userLocationArray.findIndex((user) => user.userId === userDetails.userId);
@@ -50,16 +54,6 @@ const App = () => {
   const updateUserLocationArray = (userDetails) => {
     userLocationArray[findUerIndex(userDetails)] = userDetails;
     setUserLocationArray([...userLocationArray]);
-  };
-
-  const deleteUserLocation = (userDetails) => {
-    userLocationArray.splice(findUerIndex(userDetails), 1);
-    const updatedNewArray = userLocationArray.map((user, index) => ({
-      userId: index + 1,
-      name: user.name,
-      location: user.location,
-    }));
-    setUserLocationArray(updatedNewArray);
   };
 
   const searchBySearchInput = (event) => {
@@ -83,12 +77,32 @@ const App = () => {
     setSearchedLocationArray(searchedArray);
   }, [searchValue, userLocationArray, selectedValue]);
 
+  const changeCurrentPage = (selectedPage) => {
+    setCurrentPageNo(selectedPage);
+  };
+
+  const deleteUserLocation = (userDetails) => {
+    userLocationArray.splice(findUerIndex(userDetails), 1);
+    const updatedNewArray = userLocationArray.map((user, index) => ({
+      userId: index + 1,
+      name: user.name,
+      location: user.location,
+    }));
+    setUserLocationArray([...updatedNewArray]);
+  };
+
+  useEffect(() => {
+    setCurrentPageNo(0);
+  }, [searchValue, selectedValue]);
+
   return (
     <MyContext.Provider
       value={{
         userLocationArray,
+        currentPageNo,
         updateUserLocationArray: updateUserLocationArray,
         deleteUserLocation: deleteUserLocation,
+        changeCurrentPage: changeCurrentPage,
       }}
     >
       <div className="user-location-container">
@@ -120,8 +134,9 @@ const App = () => {
           </div>
         </div>
         <Pagination
-          initialPage={3}
-          itemsPerPage={5}
+          changeCurrentPage={changeCurrentPage}
+          currentPageNo={currentPageNo}
+          itemsPerPage={itemsPerPage}
           userLocationArray={
             searchValue ? searchedLocationArray : userLocationArray
           }

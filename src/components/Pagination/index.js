@@ -1,27 +1,31 @@
 import "./index.scss";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Table from "../Table";
 import ReactPaginate from "react-paginate";
 
 const Pagination = (props) => {
-  const { userLocationArray, itemsPerPage } = props;
-  // Example userLocationArray, to simulate fetching from another resources.
-  const [itemOffset, setItemOffset] = useState(0);
+  const { userLocationArray, itemsPerPage, changeCurrentPage, currentPageNo } =
+    props;
+
+  const itemOffset = currentPageNo * itemsPerPage;
   const endOffset = itemOffset + itemsPerPage;
-  //console.log(`Loading userLocationArray from ${itemOffset} to ${endOffset}`);
-  const currentLocationArray = userLocationArray.slice(itemOffset, endOffset);
+  //console.log(`Loading userLocationArray from ${itemOffset} to ${endOffset} with page ${currentPage}`);
+  let currentLocationArray = userLocationArray.slice(itemOffset, endOffset);
   const pageCount = Math.ceil(userLocationArray.length / itemsPerPage);
-  console.log(currentLocationArray);
 
   // Invoke when user click to request another page.
   const handlePageClick = (event) => {
-    const newOffset =
-      (event.selected * itemsPerPage) % userLocationArray.length;
-    console.log(
-      `User requested page number ${event.selected}, which is offset ${newOffset}`
-    );
-    setItemOffset(newOffset);
+    const selectedPage = event.selected;
+    changeCurrentPage(selectedPage);
   };
+
+  if (currentPageNo > pageCount - 1) {
+    // currentLocationArray = userLocationArray.slice(
+    //   (pageCount - 1) * itemsPerPage,
+    //   (pageCount - 1) * itemsPerPage + itemsPerPage
+    // );
+    changeCurrentPage(pageCount - 1);
+  }
 
   return (
     <>
@@ -29,19 +33,22 @@ const Pagination = (props) => {
       <ReactPaginate
         breakLabel="..."
         nextLabel=">>"
+        page={currentPageNo}
         onPageChange={handlePageClick}
         pageRangeDisplayed={1}
         marginPagesDisplayed={1}
         pageCount={pageCount}
         previousLabel="<<"
         renderOnZeroPageCount={null}
-        className="pagination-nos-container"
-        pageLinkClassName="page-nos"
-        activeLinkClassName="active-page"
-        previousLinkClassName="prev-tag"
-        nextLinkClassName="next-tag"
+        className="pagination-nos-container prevent-select"
+        pageClassName="page-nos"
+        activeClassName="active-page"
+        previousClassName="prev-tag"
+        nextClassName="next-tag"
+        previousLinkClassName="prev-link"
+        nextLinkClassName="next-link"
         disabledLinkClassName="disable-prev-next"
-        breakLinkClassName="break-line"
+        breakClassName="break-line"
       />
     </>
   );
