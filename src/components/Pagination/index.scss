@@ -1,5 +1,5 @@
 $border: 1px solid rgb(203, 203, 203);
-$padding: 5px 10px 5px 10px;
+$padding: 1px 3px 1px 3px;
 
 .pagination-nos-container {
   display: flex;
@@ -11,16 +11,26 @@ $padding: 5px 10px 5px 10px;
   border: $border;
   border-radius: 4px;
   background-color: #ebe9e9;
+  -webkit-user-select: none; /* Safari */
+  -ms-user-select: none; /* IE 10 and IE 11 */
+  user-select: none; /* Standard syntax */
 }
 .page-nos {
   padding: $padding;
-  color: black;
   text-decoration: none;
   border-right: $border;
 }
 .active-page {
   background-color: blue;
   padding: $padding;
+}
+.page-nos-link {
+  padding: 4px 8px 4px 8px;
+  text-decoration: none;
+  color: black;
+}
+.active-page-link {
+  @extend .page-nos-link;
   color: #ffffff;
 }
 .prev-tag {
@@ -31,9 +41,6 @@ $padding: 5px 10px 5px 10px;
 .next-tag {
   padding: $padding;
   text-decoration: none;
-}
-.disable-prev-next {
-  color: gray;
 }
 .break-line {
   padding: $padding;
@@ -47,8 +54,12 @@ $padding: 5px 10px 5px 10px;
   margin: 0px;
 }
 .prev-link {
-  text-decoration: none;
+  @extend .page-nos-link;
+  color: blue;
 }
 .next-link {
-  text-decoration: none;
+  @extend .prev-link;
+}
+.disable-prev-next {
+  color: gray;
 }

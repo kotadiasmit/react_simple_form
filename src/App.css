@@ -80,3 +80,6 @@ input {
     margin-top: 15px;
   }
 }
+.disable-btn:active {
+  background-color: #cbcaca !important;
+}

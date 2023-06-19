@@ -1,7 +1,7 @@
 import "./index.scss";
-import { useState, useEffect } from "react";
 import Table from "../Table";
 import ReactPaginate from "react-paginate";
+import { useEffect } from "react";
 
 const Pagination = (props) => {
   const { userLocationArray, itemsPerPage, changeCurrentPage, currentPageNo } =
@@ -19,13 +19,15 @@ const Pagination = (props) => {
     changeCurrentPage(selectedPage);
   };
 
-  if (currentPageNo > pageCount - 1) {
-    // currentLocationArray = userLocationArray.slice(
-    //   (pageCount - 1) * itemsPerPage,
-    //   (pageCount - 1) * itemsPerPage + itemsPerPage
-    // );
-    changeCurrentPage(pageCount - 1);
-  }
+  useEffect(() => {
+    if (currentPageNo > pageCount - 1 && userLocationArray.length !== 0) {
+      // currentLocationArray = userLocationArray.slice(
+      //   (pageCount - 1) * itemsPerPage,
+      //   (pageCount - 1) * itemsPerPage + itemsPerPage
+      // );
+      changeCurrentPage(pageCount - 1);
+    }
+  });
 
   return (
     <>
@@ -36,7 +38,7 @@ const Pagination = (props) => {
         page={currentPageNo}
         onPageChange={handlePageClick}
         pageRangeDisplayed={1}
-        marginPagesDisplayed={1}
+        //marginPagesDisplayed={1}
         pageCount={pageCount}
         previousLabel="<<"
         renderOnZeroPageCount={null}
@@ -45,10 +47,12 @@ const Pagination = (props) => {
         activeClassName="active-page"
         previousClassName="prev-tag"
         nextClassName="next-tag"
+        pageLinkClassName="page-nos-link"
+        activeLinkClassName="active-page-link"
         previousLinkClassName="prev-link"
         nextLinkClassName="next-link"
         disabledLinkClassName="disable-prev-next"
-        breakClassName="break-line"
+        //breakClassName="break-line"
       />
     </>
   );

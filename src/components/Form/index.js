@@ -1,7 +1,9 @@
 import "./index.css";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { Modal, Button } from "react-bootstrap";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const Form = (props) => {
   const {
@@ -50,6 +52,7 @@ const Form = (props) => {
   const modalShow = () => setShow(true);
   const nameInputChanged = (event) => {
     setUserName(event.target.value);
+
     setErrorMsg("");
   };
   const locationInputChanged = (event) => {
@@ -70,8 +73,19 @@ const Form = (props) => {
       if (onUpdateFormShow) {
         onclickUpdateDetails(false);
         onUpdateUserDetails(addUpdateUserDetails);
+        toast.success(
+          `${addUpdateUserDetails.name.toUpperCase()}'s Details Updated`,
+          { autoClose: 3000, theme: "dark" }
+        );
       } else {
         onAddUserDetails(addUpdateUserDetails);
+        toast.success(
+          `${addUpdateUserDetails.name.toUpperCase()}'s Details Added`,
+          {
+            autoClose: 3000,
+            theme: "dark",
+          }
+        );
       }
       setUserName("");
       setUserLocation("");
@@ -81,6 +95,10 @@ const Form = (props) => {
       // setUserLocation("");
     }
   };
+
+  useEffect(() => {
+    show && document.getElementById("nameInput")?.focus();
+  }, [show]);
 
   const showUpdateAddBtn = () => {
     if (onUpdateFormShow) {
@@ -107,19 +125,20 @@ const Form = (props) => {
         </Button>
       )}
 
-      <Modal centered show={show} onHide={modalClose}>
+      <Modal centered show={show} onHide={modalClose} autoFocus={false}>
         <Modal.Header closeButton>
           <Modal.Title>{`${modelTitle} your location`}</Modal.Title>
         </Modal.Header>
 
         <Modal.Body>
           <form className="form-container" onSubmit={modalCloseOnAdd}>
-            <label className="label" htmlFor="'username">
+            <label className="label" htmlFor="username">
               User Name
             </label>
             <input
               className="input"
               type="text"
+              id="username"
               placeholder="your name"
               maxLength="40"
               value={userName}
@@ -136,6 +155,7 @@ const Form = (props) => {
               placeholder="your location"
               value={userLocation}
               onChange={locationInputChanged}
+              id="textarea"
             ></textarea>
             {errorMsg && (
               <p className="error-msg">

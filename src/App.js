@@ -1,9 +1,10 @@
 import { useState, useEffect } from "react";
 import "./App.css";
 import Form from "./components/Form";
-import Table from "./components/Table";
 import { MyContext } from "./context/myContext";
 import Pagination from "./components/Pagination";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const userDetailsArray = [
   {
@@ -67,12 +68,8 @@ const App = () => {
   useEffect(() => {
     const searchedArray = userLocationArray.filter((user) =>
       selectedValue === "searchByName"
-        ? user.name
-            .toLocaleLowerCase()
-            .includes(searchValue.toLocaleLowerCase())
-        : user.location
-            .toLocaleLowerCase()
-            .includes(searchValue.toLocaleLowerCase())
+        ? user.name.toLowerCase().includes(searchValue.toLowerCase())
+        : user.location.toLowerCase().includes(searchValue.toLowerCase())
     );
     setSearchedLocationArray(searchedArray);
   }, [searchValue, userLocationArray, selectedValue]);
@@ -99,10 +96,8 @@ const App = () => {
     <MyContext.Provider
       value={{
         userLocationArray,
-        currentPageNo,
         updateUserLocationArray: updateUserLocationArray,
         deleteUserLocation: deleteUserLocation,
-        changeCurrentPage: changeCurrentPage,
       }}
     >
       <div className="user-location-container">
@@ -128,7 +123,7 @@ const App = () => {
               <option value="searchByName">Search by Name</option>
               <option value="searchByLocation">Search by Location</option>
             </select>
-            <button type="button" className="search-btn">
+            <button type="button" className="search-btn disable-btn" disabled>
               Search
             </button>
           </div>
@@ -141,6 +136,7 @@ const App = () => {
             searchValue ? searchedLocationArray : userLocationArray
           }
         />
+        <ToastContainer theme="dark" />
       </div>
     </MyContext.Provider>
   );

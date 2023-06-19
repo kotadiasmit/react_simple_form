@@ -2,6 +2,8 @@ import { useState } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { Modal, Button } from "react-bootstrap";
 import { MyContext } from "../../context/myContext";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const DeleteModel = (props) => {
   const { deleteModalShow, userDetail, onClickDeleteModal } = props;
@@ -20,6 +22,13 @@ const DeleteModel = (props) => {
           setShow(false);
           onClickDeleteModal(false);
           deleteUserLocation(userDetail);
+          toast.warn(
+            `${userDetail.name.toUpperCase()}'s Location Details Deleted`,
+            {
+              autoClose: 3000,
+              theme: "dark",
+            }
+          );
         };
         return (
           <Modal centered show={show} onHide={modalClose}>

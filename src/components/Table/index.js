@@ -1,4 +1,3 @@
-import "./index.css";
 import TableBody from "./TableBody";
 
 const Table = (props) => {

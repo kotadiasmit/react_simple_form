@@ -36,8 +36,8 @@ const TableBody = (props) => {
           <>
             <tr>
               <th scope="row">{userId}</th>
-              <td>{name}</td>
-              <td>{location}</td>
+              <td className="row-text">{name}</td>
+              <td className="row-text">{location}</td>
               <td>
                 <button
                   type="button"

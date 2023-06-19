@@ -25,6 +25,6 @@
   width: fit-content;
 }
 
-.capitalize {
+.row-text {
   text-transform: capitalize;
 }
