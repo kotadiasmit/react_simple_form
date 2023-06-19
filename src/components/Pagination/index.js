@@ -9,7 +9,6 @@ const Pagination = (props) => {
 
   const itemOffset = currentPageNo * itemsPerPage;
   const endOffset = itemOffset + itemsPerPage;
-  //console.log(`Loading userLocationArray from ${itemOffset} to ${endOffset} with page ${currentPage}`);
   let currentLocationArray = userLocationArray.slice(itemOffset, endOffset);
   const pageCount = Math.ceil(userLocationArray.length / itemsPerPage);
 
@@ -19,12 +18,9 @@ const Pagination = (props) => {
     changeCurrentPage(selectedPage);
   };
 
+  //when page has one item & it will deleted
   useEffect(() => {
-    if (currentPageNo > pageCount - 1 && userLocationArray.length !== 0) {
-      // currentLocationArray = userLocationArray.slice(
-      //   (pageCount - 1) * itemsPerPage,
-      //   (pageCount - 1) * itemsPerPage + itemsPerPage
-      // );
+    if (currentPageNo > pageCount - 1 && userLocationArray.length) {
       changeCurrentPage(pageCount - 1);
     }
   });
@@ -37,8 +33,7 @@ const Pagination = (props) => {
         nextLabel=">>"
         page={currentPageNo}
         onPageChange={handlePageClick}
-        pageRangeDisplayed={1}
-        //marginPagesDisplayed={1}
+        pageRangeDisplayed={5}
         pageCount={pageCount}
         previousLabel="<<"
         renderOnZeroPageCount={null}
@@ -52,7 +47,6 @@ const Pagination = (props) => {
         previousLinkClassName="prev-link"
         nextLinkClassName="next-link"
         disabledLinkClassName="disable-prev-next"
-        //breakClassName="break-line"
       />
     </>
   );

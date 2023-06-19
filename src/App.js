@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import "./App.css";
+import "./App.scss";
 import Form from "./components/Form";
 import { MyContext } from "./context/myContext";
 import Pagination from "./components/Pagination";
@@ -58,11 +58,13 @@ const App = () => {
   };
 
   const searchBySearchInput = (event) => {
-    setSearchValue(event.target.value);
+    const { value } = event.target;
+    setSearchValue(value);
   };
 
   const selectedOption = (event) => {
-    setSelectedValue(event.target.value);
+    const { value } = event.target;
+    setSelectedValue(value);
   };
 
   useEffect(() => {
@@ -102,7 +104,6 @@ const App = () => {
     >
       <div className="user-location-container">
         <h1 className="mt-3">User Location Details</h1>
-
         <div className="search-and-add-location-container">
           <Form onAddUserDetails={addUserDetails} lastUserId={lastUserId} />
           <div className="search-input-container">
@@ -136,8 +137,8 @@ const App = () => {
             searchValue ? searchedLocationArray : userLocationArray
           }
         />
-        <ToastContainer theme="dark" />
       </div>
+      <ToastContainer theme="dark" />
     </MyContext.Provider>
   );
 };

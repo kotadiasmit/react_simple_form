@@ -3,7 +3,6 @@ import { useEffect, useState } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { Modal, Button } from "react-bootstrap";
 import { toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
 
 const Form = (props) => {
   const {
@@ -21,7 +20,7 @@ const Form = (props) => {
 
   //userDetailsObj & onUpdateFormShow taken when user clicks on updateBtn
   //onAddUserDetails & lastUserId taken when user clicks on Add Location
-  if (userDetailObj !== undefined) {
+  if (userDetailObj) {
     const { userId, name, location } = userDetailObj;
     userNameInput = name;
     userLocationInput = location;
@@ -51,12 +50,14 @@ const Form = (props) => {
   };
   const modalShow = () => setShow(true);
   const nameInputChanged = (event) => {
-    setUserName(event.target.value);
+    const { value } = event.target;
+    setUserName(value);
 
     setErrorMsg("");
   };
   const locationInputChanged = (event) => {
-    setUserLocation(event.target.value);
+    const { value } = event.target;
+    setUserLocation(value);
     setErrorMsg("");
   };
   const modalCloseOnAdd = (event) => {
@@ -91,13 +92,12 @@ const Form = (props) => {
       setUserLocation("");
     } else {
       showErrorMsg(trimmedUserName, trimmedUserLocation);
-      // setUserName("");
-      // setUserLocation("");
     }
   };
 
   useEffect(() => {
-    show && document.getElementById("nameInput")?.focus();
+    const nameInput = document.getElementById("username");
+    show && nameInput?.focus();
   }, [show]);
 
   const showUpdateAddBtn = () => {

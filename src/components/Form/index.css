@@ -9,14 +9,14 @@
   padding: 10px;
   font-family: serif;
 }
-.form-container .label {
+.label {
   font-size: 18px;
   margin-left: 2px;
   align-self: flex-start;
   padding-left: 5%;
 }
-.form-container .input,
-.form-container .textarea {
+.input,
+.textarea {
   width: 90%;
   font-size: 16px;
   border: 1px solid gray;
@@ -27,11 +27,10 @@
   background-color: #ececec;
   text-transform: capitalize;
 }
-.form-container .textarea {
+.textarea {
   height: 100px;
 }
-
-.form-container .error-msg {
+.error-msg {
   align-self: flex-start;
   color: red;
   padding-left: 5%;

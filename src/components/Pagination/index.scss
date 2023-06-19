@@ -1,23 +1,24 @@
 $border: 1px solid rgb(203, 203, 203);
 $padding: 1px 3px 1px 3px;
+$style-none: none;
 
 .pagination-nos-container {
   display: flex;
   justify-content: center;
   align-items: center;
-  list-style-type: none;
+  list-style-type: $style-none;
   padding: 0px;
   font-size: 18px;
   border: $border;
   border-radius: 4px;
   background-color: #ebe9e9;
-  -webkit-user-select: none; /* Safari */
-  -ms-user-select: none; /* IE 10 and IE 11 */
-  user-select: none; /* Standard syntax */
+  -webkit-user-select: $style-none; /* Safari */
+  -ms-user-select: $style-none; /* IE 10 and IE 11 */
+  user-select: $style-none; /* Standard syntax */
 }
 .page-nos {
   padding: $padding;
-  text-decoration: none;
+  text-decoration: $style-none;
   border-right: $border;
 }
 .active-page {
@@ -26,7 +27,7 @@ $padding: 1px 3px 1px 3px;
 }
 .page-nos-link {
   padding: 4px 8px 4px 8px;
-  text-decoration: none;
+  text-decoration: $style-none;
   color: black;
 }
 .active-page-link {
@@ -35,21 +36,21 @@ $padding: 1px 3px 1px 3px;
 }
 .prev-tag {
   padding: $padding;
-  text-decoration: none;
+  text-decoration: $style-none;
   border-right: $border;
 }
 .next-tag {
   padding: $padding;
-  text-decoration: none;
+  text-decoration: $style-none;
 }
 .break-line {
   padding: $padding;
   color: gray;
-  text-decoration: none;
+  text-decoration: $style-none;
   border-right: $border;
 }
 .pages {
-  border: none;
+  border: $style-none;
   padding: 0px;
   margin: 0px;
 }

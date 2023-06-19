@@ -3,7 +3,6 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import { Modal, Button } from "react-bootstrap";
 import { MyContext } from "../../context/myContext";
 import { toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
 
 const DeleteModel = (props) => {
   const { deleteModalShow, userDetail, onClickDeleteModal } = props;
@@ -33,7 +32,7 @@ const DeleteModel = (props) => {
         return (
           <Modal centered show={show} onHide={modalClose}>
             <Modal.Header closeButton>
-              <Modal.Title>{userDetail.name}</Modal.Title>
+              <Modal.Title>{userDetail.name.toUpperCase()}</Modal.Title>
             </Modal.Header>
 
             <Modal.Body>

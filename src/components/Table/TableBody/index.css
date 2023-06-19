@@ -1,21 +1,21 @@
-.table .col-srno-width {
+.col-srno-width {
   width: 10%;
 }
-.table .col-name-width {
+.col-name-width {
   width: 20%;
 }
-.table .col-btn-width {
+.col-btn-width {
   width: 20%;
 }
-.table .col-location-width {
+.col-location-width {
   width: 50%;
 }
-.table .slash {
+.slash {
   font-size: 20px;
   font-weight: 400;
   margin: 0px 3px 0px 3px;
 }
-.table .update-delete-btn {
+.update-delete-btn {
   color: #ffffff;
   border-radius: 4px;
   background-color: #0d6efd;
